@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 10:12:48 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/27 15:14:35 by wollio           ###   ########.fr       */
+/*   Updated: 2021/07/27 18:52:49 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #  define BUFFER_SIZE 3
 
-char *get_next_line(int fd)
+char *get_next_lin(int fd)
 {
 
 	static char	*buffer;
@@ -72,6 +72,7 @@ char *get_next_line(int fd)
 		return (line);
 	}
 
+	char	*tmp;
 	/* no newline in the buffer just read */
 	else
 	{
@@ -85,19 +86,18 @@ char *get_next_line(int fd)
 				free (buffer);
 				return (NULL);
 			}
-			line = ft_strjoin(line, buffer1);
+			tmp = ft_strjoin(line, buffer1);
+			free(line);
+			line = tmp;
 			j++;
 		}
-		printf("%d\n", j);
-		//line[(BUFFER_SIZE * j) + 2] = '\0';
-		printf("%s", line);
-		// i = 0;
-		// while (line[i] && line[i] != '\0')
-		// 	i++;
-		// // buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE * j) + 1);
-		// // buffer = ft_substr(line, i, BUFFER_SIZE - i + 1);
-		// // printf("%s\n", buffer);
-		// line = ft_substr(line, 0, i);
+		i = 0;
+		while (line[i] && line[i] != '\0')
+			i++;
+		buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE * j) + 1);
+		buffer = ft_substr(line, i, BUFFER_SIZE - i + 1);
+		printf("%s\n", buffer);
+		line = ft_substr(line, 0, i);
 		return (line);
 	}
 	free(buffer);

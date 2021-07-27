@@ -6,20 +6,19 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 10:16:33 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/27 09:40:43 by wollio           ###   ########.fr       */
+/*   Updated: 2021/07/27 18:44:35 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#include <stdlib.h>
-#include <unistd.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-// # ifndef BUFFER_SIZE
-// #  define BUFFER_SIZE 2
-// # endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 2
+# endif
 
 char	*get_next_line(int fd);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
