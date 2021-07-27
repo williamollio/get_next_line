@@ -6,17 +6,35 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 10:15:12 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/25 11:39:09 by wollio           ###   ########.fr       */
+/*   Updated: 2021/07/27 11:44:35 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
 
-// void free_stuff(char *buffer, char * b)
-// {
-// 	free(buffer);
-// }
+	i = 0;
+	while (n)
+	{
+		((char *)s)[i] = '\0';
+		i++;
+		n--;
+	}
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*a;
+
+	a = (void *)malloc(size * count);
+	if (!a)
+		return (NULL);
+	ft_bzero(a, size * count);
+	return (a);
+}
 
 
 static size_t	ft_strlen(const char *str)
@@ -89,3 +107,4 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)&s[i]);
 	return (NULL);
 }
+
