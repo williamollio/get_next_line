@@ -5,123 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/22 10:12:48 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/27 18:52:49 by wollio           ###   ########.fr       */
+/*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
+/*   Updated: 2021/07/28 11:46:47 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h>
+# include "get_next_line.h"
+# include <stdio.h>
+# include <fcntl.h>
 
-#  define BUFFER_SIZE 3
+# define BUFFER_SIZE 2
 
-char *get_next_lin(int fd)
+char *ft_return(char *buffer, char *buff, size_t count)
+
 {
-
-	static char	*buffer;
-	char buffer1[BUFFER_SIZE];
-	char		*line;
-	int			i;
-	int			j;
-	size_t		bytes;
+	int i;
+	char *line;
 
 	i = 0;
-	j = 1;
-	if (fd < 0)
+	if (count == 0)
 	{
-		free (buffer);
+		free(buffer);
 		return (NULL);
 	}
-	/* check if there is already something in the static var */
-	if (!buffer)
-	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (!buffer)
-			return (NULL);
-		bytes = read (fd, buffer, BUFFER_SIZE);
-		if (fd < 0)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		/* if error occurs during the read || end .txt || .txt is empty */
-		if (bytes < 0 || bytes == 0 )
-		{
-			free(buffer);
-			return (NULL);
-		}
-	}
-	while (buffer[i] && buffer[i] != '\n') // 123\n123
+	if (ft_strchr(buff, '\n'))
+		return (buff);
+	while (buffer[i] != '\n')
 		i++;
-	/* if newline contained in the buffer read */
-	if (buffer[i] == '\n')
+	line = ft_calloc(sizeof(char *), (i + 1));
+	line = ft_substr(buffer, 0, i + 1);
+	buffer = calloc(sizeof(char *), count - i + 1);
+	buffer = ft_substr(buffer, i + 2, count - i + 1);
+	return (buffer);
+}
+
+void ft_append(char **buffer, char *buff)
+{
+	char *tmp;
+	tmp = ft_strjoin(*buffer, buff);
+	free(*buffer);
+	*buffer = tmp;
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*buffer;
+	char		buff[BUFFER_SIZE + 1];
+	int			bytes;
+	int			count;
+
+	count = 0;
+	bytes = 0;
+	if (!fd)
 	{
-		line = (char *)malloc(sizeof(char) * (i + 1));
-		if (!line)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		line = ft_substr(buffer, 0, i);
-		free (buffer);
-		buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE - i + 1));
-		if (!buffer)
-			return (NULL);
-		buffer = ft_substr(buffer, i + 1, BUFFER_SIZE - i);
-		return (line);
+		free(buffer);
+		return (NULL);
 	}
 
-	char	*tmp;
-	/* no newline in the buffer just read */
-	else
+	while (bytes > 0)
 	{
-		line = buffer;
-		while (!ft_strchr(line, '\n'))
+		bytes = read (fd, buff, BUFFER_SIZE);
+		if (bytes >= 0) // when bytes == 0 ?
+			buff[bytes] = '\0';
+		else if (bytes == -1)
 		{
-			read(fd, buffer1, BUFFER_SIZE);
-			buffer1[BUFFER_SIZE + 1] = '\0';
-			if (fd < 0)
-			{
-				free (buffer);
-				return (NULL);
-			}
-			tmp = ft_strjoin(line, buffer1);
-			free(line);
-			line = tmp;
-			j++;
+			free (buffer);
+			return (NULL);
 		}
-		i = 0;
-		while (line[i] && line[i] != '\0')
-			i++;
-		buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE * j) + 1);
-		buffer = ft_substr(line, i, BUFFER_SIZE - i + 1);
-		printf("%s\n", buffer);
-		line = ft_substr(line, 0, i);
-		return (line);
+		if (!buffer)
+			buffer = ft_calloc(bytes, sizeof(char*));
+		else
+			ft_append(&buffer, buff);
+		if (ft_strchr(buff, '\n'))
+			break;
+		count += bytes;
 	}
-	free(buffer);
-	return (NULL);
+	return (ft_return(buffer, buff, count));
 }
 
 int main()
 {
-	int fd;
-	int line;
-	int i;
 
-	i = 1;
+	int fd;
+	int i;
+	int line;
+
 	line = 1;
+	i = 1;
 	fd = open("fd.txt", O_RDONLY);
-	if (fd < -1)
-	{
-		printf("%s", "########## Couldn't open file ##########");
-		return (1);
-	}
+	if (fd < 1)
+		printf("%s", "###### Couldn't open file ######");
+
 	while (i <= line)
 	{
-		printf("Call %d : get next line : %s\n", i , get_next_line(fd));
+		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
 		i++;
 	}
 	close(fd);
+	return (0);
 }
