@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/28 11:46:47 by wollio           ###   ########.fr       */
+/*   Updated: 2021/07/28 18:39:02 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,26 @@
 
 # define BUFFER_SIZE 2
 
-char *ft_return(char *buffer, char *buff, size_t count)
-
+char *ft_return(char **buffer, int count)
 {
-	int i;
-	char *line;
+	int		i;
+	char	*line;
+	char	*tmp;
 
 	i = 0;
-	if (count == 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	if (ft_strchr(buff, '\n'))
-		return (buff);
-	while (buffer[i] != '\n')
+	while (*buffer[i] != '\n') // when buffer[i] == '\0' ??
 		i++;
-	line = ft_calloc(sizeof(char *), (i + 1));
-	line = ft_substr(buffer, 0, i + 1);
-	buffer = calloc(sizeof(char *), count - i + 1);
-	buffer = ft_substr(buffer, i + 2, count - i + 1);
-	return (buffer);
+	line = ft_substr(*buffer, 0, i + 1);
+	tmp = ft_substr(*buffer, i + 1, count - i + 1);
+	free(*buffer);
+	*buffer = tmp;
+	return (line);
 }
 
 void ft_append(char **buffer, char *buff)
 {
 	char *tmp;
+
 	tmp = ft_strjoin(*buffer, buff);
 	free(*buffer);
 	*buffer = tmp;
@@ -54,33 +48,33 @@ char	*get_next_line(int fd)
 	int			bytes;
 	int			count;
 
+	printf("Buffer : %s\n", buffer);
 	count = 0;
-	bytes = 0;
+	bytes = 1;
 	if (!fd)
 	{
 		free(buffer);
 		return (NULL);
 	}
-
 	while (bytes > 0)
 	{
 		bytes = read (fd, buff, BUFFER_SIZE);
 		if (bytes >= 0) // when bytes == 0 ?
 			buff[bytes] = '\0';
-		else if (bytes == -1)
+		if(bytes == -1)
 		{
 			free (buffer);
 			return (NULL);
 		}
 		if (!buffer)
-			buffer = ft_calloc(bytes, sizeof(char*));
+			buffer = ft_strdup(buff);
 		else
 			ft_append(&buffer, buff);
+		count += bytes;
 		if (ft_strchr(buff, '\n'))
 			break;
-		count += bytes;
 	}
-	return (ft_return(buffer, buff, count));
+	return (ft_return(&buffer, count));
 }
 
 int main()
@@ -90,7 +84,7 @@ int main()
 	int i;
 	int line;
 
-	line = 1;
+	line = 2;
 	i = 1;
 	fd = open("fd.txt", O_RDONLY);
 	if (fd < 1)
