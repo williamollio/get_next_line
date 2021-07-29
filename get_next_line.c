@@ -6,15 +6,30 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/28 18:39:02 by wollio           ###   ########.fr       */
+/*   Updated: 2021/07/29 19:09:48 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 # include "get_next_line.h"
 # include <stdio.h>
 # include <fcntl.h>
 
-# define BUFFER_SIZE 2
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if (s[i] == (char)c)
+		return ((char *)&s[i]);
+	return (NULL);
+}
 
 char *ft_return(char **buffer, int count)
 {
@@ -22,13 +37,16 @@ char *ft_return(char **buffer, int count)
 	char	*line;
 	char	*tmp;
 
+	if (count == 0)
+		return (NULL);
 	i = 0;
-	while (*buffer[i] != '\n') // when buffer[i] == '\0' ??
+	while ((*buffer)[i] != '\n') // when buffer[i] == '\0' ??
 		i++;
 	line = ft_substr(*buffer, 0, i + 1);
 	tmp = ft_substr(*buffer, i + 1, count - i + 1);
 	free(*buffer);
 	*buffer = tmp;
+	printf("buffer %p, tmp %p, line %p\n", buffer, tmp, line);
 	return (line);
 }
 
@@ -44,28 +62,21 @@ void ft_append(char **buffer, char *buff)
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
-	char		buff[BUFFER_SIZE + 1];
+	char		buff[BUFFER_SIZE + 1]; //to malloc
 	int			bytes;
 	int			count;
 
-	printf("Buffer : %s\n", buffer);
-	count = 0;
+	count = -1;
 	bytes = 1;
 	if (!fd)
-	{
-		free(buffer);
 		return (NULL);
-	}
 	while (bytes > 0)
 	{
 		bytes = read (fd, buff, BUFFER_SIZE);
 		if (bytes >= 0) // when bytes == 0 ?
 			buff[bytes] = '\0';
 		if(bytes == -1)
-		{
-			free (buffer);
 			return (NULL);
-		}
 		if (!buffer)
 			buffer = ft_strdup(buff);
 		else
@@ -77,24 +88,26 @@ char	*get_next_line(int fd)
 	return (ft_return(&buffer, count));
 }
 
-int main()
-{
+// int main()
+// {
 
-	int fd;
-	int i;
-	int line;
+// 	int fd;
+// 	int i;
+// 	int line;
 
-	line = 2;
-	i = 1;
-	fd = open("fd.txt", O_RDONLY);
-	if (fd < 1)
-		printf("%s", "###### Couldn't open file ######");
+// 	line = 2;
+// 	i = 1;
+// 	fd = open("fd.txt", O_RDONLY);
+// 	if (fd < 1)
+// 		printf("%s", "###### Couldn't open file ######");
 
-	while (i <= line)
-	{
-		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
-		i++;
-	}
-	close(fd);
-	return (0);
-}
+// 	while (i <= line)
+// 	{
+// 		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
+// 		i++;
+// 	}
+// 	close(fd);
+// 	system("leaks get_next_line");
+// 	fscanf(stdin, "c");
+// 	return (0);
+// }

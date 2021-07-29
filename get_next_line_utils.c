@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 10:15:12 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/28 11:22:46 by wollio           ###   ########.fr       */
+/*   Updated: 2021/07/29 10:38:41 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,6 @@ char	*ft_strdup(const char *s1)
 	ft_memcpy(s2, ((char *)s1), i);
 	s2[i] = '\0';
 	return (s2);
-}
-
-
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (n)
-	{
-		((char *)s)[i] = '\0';
-		i++;
-		n--;
-	}
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*a;
-
-	a = (void *)malloc(size * count);
-	if (!a)
-		return (NULL);
-	ft_bzero(a, size * count);
-	return (a);
 }
 
 
@@ -123,20 +98,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s3[i] = '\0';
 	return (s3);
 }
-
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return ((char *)&s[i]);
-		i++;
-	}
-	if (s[i] == (char)c)
-		return ((char *)&s[i]);
-	return (NULL);
-}
-
