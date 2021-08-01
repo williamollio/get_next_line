@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/29 19:09:48 by wollio           ###   ########.fr       */
+/*   Updated: 2021/08/01 16:02:02 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void ft_append(char **buffer, char *buff)
 	tmp = ft_strjoin(*buffer, buff);
 	free(*buffer);
 	*buffer = tmp;
+	free(tmp);
 }
 
 char	*get_next_line(int fd)
@@ -73,9 +74,11 @@ char	*get_next_line(int fd)
 	while (bytes > 0)
 	{
 		bytes = read (fd, buff, BUFFER_SIZE);
-		if (bytes >= 0) // when bytes == 0 ?
+		if (bytes == 0)
+			return (NULL);
+		if (bytes > 0)
 			buff[bytes] = '\0';
-		if(bytes == -1)
+		else //(bytes == -1)
 			return (NULL);
 		if (!buffer)
 			buffer = ft_strdup(buff);
@@ -88,26 +91,26 @@ char	*get_next_line(int fd)
 	return (ft_return(&buffer, count));
 }
 
-// int main()
-// {
+int main()
+{
 
-// 	int fd;
-// 	int i;
-// 	int line;
+	int fd;
+	int i;
+	int line;
 
-// 	line = 2;
-// 	i = 1;
-// 	fd = open("fd.txt", O_RDONLY);
-// 	if (fd < 1)
-// 		printf("%s", "###### Couldn't open file ######");
+	line = 1;
+	i = 1;
+	fd = open("fd.txt", O_RDONLY);
+	if (fd < 1)
+		printf("%s", "###### Couldn't open file ######");
 
-// 	while (i <= line)
-// 	{
-// 		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
-// 		i++;
-// 	}
-// 	close(fd);
-// 	system("leaks get_next_line");
-// 	fscanf(stdin, "c");
-// 	return (0);
-// }
+	while (i <= line)
+	{
+		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
+		i++;
+	}
+	close(fd);
+	// system("leaks get_next_line");
+	// fscanf(stdin, "c");
+	return (0);
+}
