@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/08/01 16:02:02 by wollio           ###   ########.fr       */
+/*   Updated: 2021/08/01 16:43:51 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char *ft_return(char **buffer, int count)
 	tmp = ft_substr(*buffer, i + 1, count - i + 1);
 	free(*buffer);
 	*buffer = tmp;
+	free(tmp);
 	printf("buffer %p, tmp %p, line %p\n", buffer, tmp, line);
 	return (line);
 }
@@ -63,7 +64,7 @@ void ft_append(char **buffer, char *buff)
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
-	char		buff[BUFFER_SIZE + 1]; //to malloc
+	char		*buff; //to malloc
 	int			bytes;
 	int			count;
 
@@ -73,9 +74,13 @@ char	*get_next_line(int fd)
 		return (NULL);
 	while (bytes > 0)
 	{
+		buff = malloc(BUFFER_SIZE + 1);
 		bytes = read (fd, buff, BUFFER_SIZE);
 		if (bytes == 0)
+		{
+			free(buffer);
 			return (NULL);
+		}
 		if (bytes > 0)
 			buff[bytes] = '\0';
 		else //(bytes == -1)
@@ -84,33 +89,33 @@ char	*get_next_line(int fd)
 			buffer = ft_strdup(buff);
 		else
 			ft_append(&buffer, buff);
-		count += bytes;
 		if (ft_strchr(buff, '\n'))
 			break;
+		count += bytes;
 	}
 	return (ft_return(&buffer, count));
 }
 
-int main()
-{
+// int main()
+// {
 
-	int fd;
-	int i;
-	int line;
+// 	int fd;
+// 	int i;
+// 	int line;
 
-	line = 1;
-	i = 1;
-	fd = open("fd.txt", O_RDONLY);
-	if (fd < 1)
-		printf("%s", "###### Couldn't open file ######");
+// 	line = 1;
+// 	i = 1;
+// 	fd = open("fd.txt", O_RDONLY);
+// 	if (fd < 1)
+// 		printf("%s", "###### Couldn't open file ######");
 
-	while (i <= line)
-	{
-		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
-		i++;
-	}
-	close(fd);
-	// system("leaks get_next_line");
-	// fscanf(stdin, "c");
-	return (0);
-}
+// 	while (i <= line)
+// 	{
+// 		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
+// 		i++;
+// 	}
+// 	close(fd);
+// 	// system("leaks get_next_line");
+// 	// fscanf(stdin, "c");
+// 	return (0);
+// }
