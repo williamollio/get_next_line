@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 10:15:12 by wollio            #+#    #+#             */
-/*   Updated: 2021/07/29 10:38:41 by wollio           ###   ########.fr       */
+/*   Updated: 2021/08/02 08:12:18 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		y++;
 	}
 	s3[i] = '\0';
+	printf("s3 in ft_join : %p", s3);
+
+
 	return (s3);
 }
