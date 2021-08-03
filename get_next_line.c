@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/08/02 15:17:24 by wollio           ###   ########.fr       */
+/*   Updated: 2021/08/03 14:26:48 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,24 @@ char *ft_return(char **buffer, int bytes)
 	i = 0;
 	while ((*buffer)[i] != '\n' && (*buffer)[i] != '\0')
 		i++;
-	if((*buffer)[i] != '\n')
+	if((*buffer)[i] == '\n')
 	{
 		line = ft_substr(*buffer, 0, i + 1);
 		tmp = ft_strdup(&((*buffer)[i + 1]));
 		free(*buffer);
 		*buffer = tmp;
+		if ((*buffer)[0] == '\0')
+		{
+			free(*buffer);
+			*buffer = NULL;
+		}
 	}
 	else
-		return (*buffer);
-	//free(tmp);
+	{
+		line = ft_strdup(*buffer);
+		free(*buffer);
+		*buffer = NULL;
+	}
 	return (line);
 }
 
@@ -69,6 +77,7 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		buff[BUFFER_SIZE + 1]; //to malloc
 	int			bytes;
+
 	bytes = 1;
 	if (!fd)
 		return (NULL);
@@ -110,7 +119,7 @@ char	*get_next_line(int fd)
 // 		i++;
 // 	}
 // 	close(fd);
-// 	// system("leaks get_next_line");
-// 	// fscanf(stdin, "c");
+// 	system("leaks get_next_line");
+// 	fscanf(stdin, "c");
 // 	return (0);
 // }

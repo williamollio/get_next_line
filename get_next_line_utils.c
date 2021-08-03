@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 10:15:12 by wollio            #+#    #+#             */
-/*   Updated: 2021/08/02 14:13:10 by wollio           ###   ########.fr       */
+/*   Updated: 2021/08/03 11:21:02 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_strdup(const char *s1)
 }
 
 
-static size_t	ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
 	int	i;
 
