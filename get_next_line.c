@@ -6,14 +6,12 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/08/03 17:40:24 by wollio           ###   ########.fr       */
+/*   Updated: 2021/08/03 18:36:52 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-# include "get_next_line.h"
-# include <stdio.h>
-# include <fcntl.h>
+#include "get_next_line.h"
+#include <fcntl.h>
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -31,29 +29,35 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char *ft_return(char **buffer, int bytes)
+static char	*if_newline(char **buffer, char *line, int i)
+{
+	char	*tmp;
+
+	line = ft_substr(*buffer, 0, i + 1);
+	tmp = ft_strdup(&((*buffer)[i + 1]));
+	free(*buffer);
+	*buffer = tmp;
+	if ((*buffer)[0] == '\0')
+	{
+		free(*buffer);
+		*buffer = NULL;
+	}
+	return (line);
+}
+
+static char	*ft_return(char **buffer, int bytes)
 {
 	int		i;
 	char	*line;
-	char	*tmp;
 
+	line = NULL;
 	if (bytes == 0 && *buffer == NULL)
 		return (NULL);
 	i = 0;
 	while ((*buffer)[i] != '\n' && (*buffer)[i] != '\0')
 		i++;
-	if((*buffer)[i] == '\n')
-	{
-		line = ft_substr(*buffer, 0, i + 1);
-		tmp = ft_strdup(&((*buffer)[i + 1]));
-		free(*buffer);
-		*buffer = tmp;
-		if ((*buffer)[0] == '\0')
-		{
-			free(*buffer);
-			*buffer = NULL;
-		}
-	}
+	if ((*buffer)[i] == '\n')
+		line = if_newline(buffer, line, i);
 	else
 	{
 		line = ft_strdup(*buffer);
@@ -63,9 +67,9 @@ char *ft_return(char **buffer, int bytes)
 	return (line);
 }
 
-void ft_append(char **buffer, char *buff)
+static void	ft_append(char **buffer, char *buff)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = ft_strjoin(*buffer, buff);
 	free(*buffer);
@@ -85,7 +89,7 @@ char	*get_next_line(int fd)
 	{
 		bytes = read (fd, buff, BUFFER_SIZE);
 		if (bytes == 0)
-			break;
+			break ;
 		if (bytes > 0)
 			buff[bytes] = '\0';
 		else if (bytes == -1)
@@ -95,31 +99,32 @@ char	*get_next_line(int fd)
 		else
 			ft_append(&buffer, buff);
 		if (ft_strchr(buffer, '\n'))
-			break;
+			break ;
 	}
 	return (ft_return(&buffer, bytes));
 }
+/*
+int main()
+{
 
-// int main()
-// {
+	int fd;
+	int i;
+	int line;
 
-// 	int fd;
-// 	int i;
-// 	int line;
+	line = 9;
+	i = 1;
+	fd = open("fd.txt", O_RDONLY);
+	if (fd < 1)
+		printf("%s", "###### Couldn't open file ######");
 
-// 	line = 9;
-// 	i = 1;
-// 	fd = open("fd.txt", O_RDONLY);
-// 	if (fd < 1)
-// 		printf("%s", "###### Couldn't open file ######");
-
-// 	while (i <= line)
-// 	{
-// 		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
-// 		i++;
-// 	}
-// 	close(fd);
-// 	//system("leaks get_next_line");
-// 	//fscanf(stdin, "c");
-// 	return (0);
-// }
+	while (i <= line)
+	{
+		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
+		i++;
+	}
+	close(fd);
+	system("leaks get_next_line");
+	fscanf(stdin, "c");
+	return (0);
+}
+*/
