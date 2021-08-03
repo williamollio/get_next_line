@@ -6,7 +6,7 @@
 /*   By: wollio <wollio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/08/03 14:26:48 by wollio           ###   ########.fr       */
+/*   Updated: 2021/08/03 17:40:24 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ void ft_append(char **buffer, char *buff)
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
-	char		buff[BUFFER_SIZE + 1]; //to malloc
+	char		buff[BUFFER_SIZE + 1];
 	int			bytes;
 
 	bytes = 1;
-	if (!fd)
+	if (fd < 0)
 		return (NULL);
 	while (bytes > 0)
 	{
@@ -107,7 +107,7 @@ char	*get_next_line(int fd)
 // 	int i;
 // 	int line;
 
-// 	line = 2;
+// 	line = 9;
 // 	i = 1;
 // 	fd = open("fd.txt", O_RDONLY);
 // 	if (fd < 1)
@@ -119,7 +119,7 @@ char	*get_next_line(int fd)
 // 		i++;
 // 	}
 // 	close(fd);
-// 	system("leaks get_next_line");
-// 	fscanf(stdin, "c");
+// 	//system("leaks get_next_line");
+// 	//fscanf(stdin, "c");
 // 	return (0);
 // }
