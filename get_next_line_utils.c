@@ -1,4 +1,16 @@
-#include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wollio <williamollio@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/20 17:59:03 by wollio            #+#    #+#             */
+/*   Updated: 2021/10/20 18:02:51 by wollio           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "./includes/get_next_line.h"
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
