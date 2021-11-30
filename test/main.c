@@ -6,11 +6,11 @@
 /*   By: wollio <williamollio@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:53:57 by wollio            #+#    #+#             */
-/*   Updated: 2021/10/20 17:59:27 by wollio           ###   ########.fr       */
+/*   Updated: 2021/11/30 10:56:01 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/get_next_line.h"
+#include "../get_next_line.h"
 
 int main()
 {
@@ -33,3 +33,4 @@ int main()
     close(fd);
     return (0);
 }
+

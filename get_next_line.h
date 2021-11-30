@@ -6,7 +6,7 @@
 /*   By: wollio <williamollio@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 10:16:33 by wollio            #+#    #+#             */
-/*   Updated: 2021/10/20 17:54:43 by wollio           ###   ########.fr       */
+/*   Updated: 2021/11/30 10:53:35 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 43
+#  define BUFFER_SIZE 42
 # endif
 
 # include <stdlib.h>

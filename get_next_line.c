@@ -6,11 +6,11 @@
 /*   By: wollio <williamollio@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 18:07:29 by wollio            #+#    #+#             */
-/*   Updated: 2021/10/20 18:02:38 by wollio           ###   ########.fr       */
+/*   Updated: 2021/11/30 10:55:00 by wollio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/get_next_line.h"
+#include "get_next_line.h"
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -102,28 +102,3 @@ char	*get_next_line(int fd)
 	}
 	return (ft_return(&buffer, bytes));
 }
-/*
-int main()
-{
-
-	int fd;
-	int i;
-	int line;
-
-	line = 9;
-	i = 1;
-	fd = open("fd.txt", O_RDONLY);
-	if (fd < 1)
-		printf("%s", "###### Couldn't open file ######");
-
-	while (i <= line)
-	{
-		printf("Call %d of get next line : %s\n",i ,  get_next_line(fd));
-		i++;
-	}
-	close(fd);
-	system("leaks get_next_line");
-	fscanf(stdin, "c");
-	return (0);
-}
-*/
