@@ -6,9 +6,6 @@ Calling your function get_next_line in a loop will then allow you to read the te
 
 Subject PDF: https://github.com/williamollio/get_next_line/blob/main/subject/get_next_line.pdf
 
-# Grade
-[![wollio's 42Project Score](https://badge42.herokuapp.com/api/project/wollio/get_next_line)](https://github.com/williamollio)
-
 # Clone
 Open a terminal and run following command:
 ```
